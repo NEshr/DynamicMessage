@@ -1,0 +1,11 @@
+[
+    {   "id": 1,
+        "purpose": "Welcome Guest",
+        "message": "$greet $guest, and welcome to $hotel. We hope you enjoy your stay, and please let us know if you need anything"
+
+    },
+    {   "id": 2,
+        "purpose": "Guest Just Made Reservation",
+        "message": "Thank you $guest for choosing $hotel. In order to make sure your arrival on $checkIn is to your liking, please let us know if you have any special requests you need us to fulfill prior to your arrival, please let us know. We wish you safe travels!"
+    }
+]
