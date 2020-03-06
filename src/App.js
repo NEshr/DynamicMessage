@@ -4,35 +4,34 @@ import companies from "./JSON/Companies.json";
 import guests from "./JSON/Guests.json";
 import messages from "./JSON/Messages.json";
 import moment from "moment-timezone";
-
 import "./App.css";
-
 import Dropdown from "./Dropdown/Dropdown";
 
 class App extends Component {
   constructor(props) {
     super(props);
+    //state will hold guest, hotel, and message objects, then when the send button is clicked, relevant data from all three will be combined and set as a string message in sentMessage property
     this.state = { guest: null, hotel: null, message: null, sentMessage: null };
+
     this.saveSelection = this.saveSelection.bind(this);
     this.greeting = this.greeting.bind(this);
     this.printMessage = this.printMessage.bind(this);
   }
 
+  //this dynamically assigns an object to its corresponding property in the state
   saveSelection(objectType, objectName, objDirectory, jsonArray) {
     let jsonIndex = objDirectory[objectName] - 1;
-
     let object = jsonArray[jsonIndex];
-
-    this.setState({ [objectType]: object }, () => console.log(this.state));
+    this.setState({ [objectType]: object });
   }
-
+  //combines data from guest, hotel and message objects to generate message
   printMessage() {
     if (!this.state.guest || !this.state.message || !this.state.hotel) {
       return;
     }
 
     let message = this.state.message.message;
-
+    //replaces all placeholders with selected data
     message = message.replace(/\$guest/gi, this.state.guest.firstName);
     message = message.replace(/\$greet/gi, this.greeting());
     message = message.replace(/\$hotel/gi, this.state.hotel.company);
@@ -46,6 +45,7 @@ class App extends Component {
 
     this.setState({ sentMessage: message });
   }
+  //gives greeting depending on time of day, times chosen are based on colloquial sense of when morning, afternoon and evening are, not on technical definitions.
   greeting() {
     let time = moment().tz(this.state.hotel.timezone);
 
@@ -65,23 +65,6 @@ class App extends Component {
       greeting = "Good Evening";
     }
     return greeting;
-
-    // console.log(
-    //   "start timestamp: " +
-    //     moment
-    //       .unix(this.state.guest.reservation.startTimestamp)
-    //       .utc()
-    //       .format("MM-DD-YYYY")
-    // );
-    // console.log(
-    //   "end timestamp: " +
-    //     moment
-    //       .unix(this.state.guest.reservation.endTimestamp)
-    //       .utc()
-    //       .format("MM-DD-YYYY")
-    // );
-
-    // console.log(time);
   }
 
   render() {
@@ -89,6 +72,7 @@ class App extends Component {
     let companyDirectory = {};
     let messageDirectory = {};
 
+    //the following loops populate the above directories, using name and id of each object within the JSON files as the key and value respectively. The relevant object an then be pulled in O(1) time from the JSON arrays of objects, avoiding subsequent array searches.
     for (let guest of guests) {
       let fullName = `${guest.firstName} ${guest.lastName}`;
       guestDirectory[fullName] = guest.id;
