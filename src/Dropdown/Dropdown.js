@@ -15,6 +15,7 @@ function DropDown(props) {
           )
         }
       >
+        <option></option>
         {props.selectionArray.map(element => {
           return (
             <option value={element} key={element}>
