@@ -45,20 +45,22 @@ class App extends Component {
 
     this.setState({ sentMessage: message });
   }
-  //gives greeting depending on time of day, times chosen are based on colloquial sense of when morning, afternoon and evening are, not on technical definitions.
+  /*gives greeting depending on time of day based on time at the hotel,
+   times chosen are based on colloquial sense of when morning, 
+   afternoon and evening are, not on technical definitions.*/
   greeting() {
-    let time = moment().tz(this.state.hotel.timezone);
 
-    let todaysDate = time.format("MM-DD-YYYY");
+    let time = moment().tz(this.state.hotel.timezone);
     let greeting = "";
     if (
-      time.isBefore(todaysDate + " 12:00") &&
-      time.isAfter(todaysDate + "3:00")
+      time.isBefore(time.format().replace(/T\d\d:\d\d:\d\d/, "T12:00")) &&
+      time.isAfter(time.format().replace(/T\d\d:\d\d:\d\d/, "T03:00"))
     ) {
       greeting = "Good morning";
-    } else if (
-      time.isAfter(time.format("MM-DD-YYYY") + " 12:00") &&
-      time.isBefore(todaysDate + "18:00")
+    }
+    else if (
+      time.isAfter(time.format().replace(/T\d\d:\d\d:\d\d/, "T12:00")) &&
+      time.isBefore(time.format().replace(/T\d\d:\d\d:\d\d/, "T18:00"))
     ) {
       greeting = "Good Afternoon";
     } else {
@@ -72,7 +74,10 @@ class App extends Component {
     let companyDirectory = {};
     let messageDirectory = {};
 
-    //the following loops populate the above directories, using name and id of each object within the JSON files as the key and value respectively. The relevant object an then be pulled in O(1) time from the JSON arrays of objects, avoiding subsequent array searches.
+    /*the following loops populate the above directories,
+     using name and id of each object within the JSON files as the key and value respectively. 
+     The relevant object can then be pulled in O(1) time from the JSON arrays of objects, 
+     avoiding subsequent array searches.*/
     for (let guest of guests) {
       let fullName = `${guest.firstName} ${guest.lastName}`;
       guestDirectory[fullName] = guest.id;
@@ -86,9 +91,9 @@ class App extends Component {
       messageDirectory[messagePurpose] = message.id;
     }
 
-    let result = "";
+    let sentMessage = "";
     if (this.state.sentMessage) {
-      result = <p className="message">{this.state.sentMessage}</p>;
+      sentMessage = <p className="message">{this.state.sentMessage}</p>;
     }
 
     return (
@@ -132,7 +137,7 @@ class App extends Component {
               Send message!
             </button>
           </p>
-          {result}
+          {sentMessage}
         </header>
       </div>
     );

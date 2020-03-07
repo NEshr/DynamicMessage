@@ -14,6 +14,6 @@ I did encounter some drawbacks to using JavaScript as it lacks some features of 
 
 This approach also made it wasy to debug or notice errors since even if the program did not return an error in the console, it would be visually noticeable on the page.
 
-There is certainly much more to be done; for starters, adding more messages and perhaps creating categories of messages which will be handled by different message objects. Otherwise, I feel the state in the App Component would come to be bloated with a dozen or more variables.
+There is certainly much more to be done; for starters, adding more messages and perhaps creating categories of messages which will be handled by different message objects. Otherwise, I feel the state in the App Component would come to be bloated with a dozen or more variables. Also the time/timezone functionality was tricky to implement and may merit more thorough review and testing. 
 
 All in all, a fun little project!
